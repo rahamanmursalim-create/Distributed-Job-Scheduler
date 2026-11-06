@@ -37,9 +37,9 @@ An additional fix was applied to `Elasticsearch7DAOImpl.deleteByLastTime()`. The
 
 ## 2. Project Scope and Migration Objectives
 
-This project is based on the supplied OpenJob repository snapshot:
+This project is based on the supplied Distributed Job Scheduler repository snapshot:
 
-- Original project: OpenJob
+- Original project: Distributed Job Scheduler
 - Original project version: 1.0.8
 - Baseline Git commit: `f6516c60`
 - Original build system: Maven multi-module

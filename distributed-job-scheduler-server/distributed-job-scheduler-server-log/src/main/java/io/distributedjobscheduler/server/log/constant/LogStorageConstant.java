@@ -1,0 +1,14 @@
+package io.distributedjobscheduler.server.log.constant;
+
+/**
+ * @author stelin swoft@qq.com
+ * @since 1.0.0
+ */
+public class LogStorageConstant {
+    public static final String H2 = "h2";
+    public static final String MYSQL = "mysql";
+    public static final String POSTGRESQL = "postgresql";
+    public static final String ORACLE = "oracle";
+    public static final String TIDB = "tidb";
+    public static final String ELASTICSEARCH7 = "elasticsearch7";
+}

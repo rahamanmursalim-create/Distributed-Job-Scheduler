@@ -1,0 +1,12 @@
+package io.distributedjobscheduler.server.admin.vo.delay;
+
+import lombok.Data;
+
+/**
+ * @author stelin swoft@qq.com
+ * @since 1.0.0
+ */
+@Data
+public class StopDelayInstanceVO {
+    private Integer result;
+}

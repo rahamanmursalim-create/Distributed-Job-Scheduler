@@ -5,17 +5,17 @@
 ### Generate entity,repo,dto,dao,data:
 
 ```shell
-cd ../openjob-server/openjob-server-repository
-kite plug run 'gen java ser code' -- --cs @c --tpl openjob/entity,repo,dto,openjob/dao,openjob/dao-impl,openjob/data,openjob/data-impl --pkg io.openjob.server.repository -o @pkg
+cd ../distributedjobscheduler-server/distributedjobscheduler-server-repository
+kite plug run 'gen java ser code' -- --cs @c --tpl distributedjobscheduler/entity,repo,dto,distributedjobscheduler/dao,distributedjobscheduler/dao-impl,distributedjobscheduler/data,distributedjobscheduler/data-impl --pkg io.distributedjobscheduler.server.repository -o @pkg
 ```
 
 ### Generate req,vo,controller,service dto:
 
 ```shell
-cd ../openjob-server/openjob-server-admin
-kite plug run 'gen java ser code' -- --cs @c --tpl curd,openjob/controller,openjob/service,openjob/service-impl --pkg io.openjob.server.admin -o @pkg
+cd ../distributedjobscheduler-server/distributedjobscheduler-server-admin
+kite plug run 'gen java ser code' -- --cs @c --tpl curd,distributedjobscheduler/controller,distributedjobscheduler/service,distributedjobscheduler/service-impl --pkg io.distributedjobscheduler.server.admin -o @pkg
 
-kite plug run 'gen java ser code' -- --cs @c --tpl openjob/service,openjob/service-impl --pkg io.openjob.server.admin -o @pkg
+kite plug run 'gen java ser code' -- --cs @c --tpl distributedjobscheduler/service,distributedjobscheduler/service-impl --pkg io.distributedjobscheduler.server.admin -o @pkg
 
-kite plug run 'gen java ser code' -- --cs @c --tpl openjob/controller --pkg io.openjob.server.admin -o @pkg
+kite plug run 'gen java ser code' -- --cs @c --tpl distributedjobscheduler/controller --pkg io.distributedjobscheduler.server.admin -o @pkg
 ```

@@ -6,22 +6,22 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version>
+        <version>4.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>io.openjob</groupId>
-    <artifactId>openjob</artifactId>
+    <groupId>io.distributedjobscheduler</groupId>
+    <artifactId>distributed-job-scheduler</artifactId>
     <packaging>pom</packaging>
     <version>1.0.8</version>
 
-    <name>Openjob Build ${version}</name>
-    <description>Openjob build with Maven</description>
+    <name>Distributed Job Scheduler Build ${project.version}</name>
+    <description>Distributed Job Scheduler build with Maven</description>
 
     <modules>
-        <module>openjob-common</module>
-        <module>openjob-worker</module>
-        <module>openjob-server</module>
+        <module>distributed-job-scheduler-common</module>
+        <module>distributed-job-scheduler-worker</module>
+        <module>distributed-job-scheduler-server</module>
     </modules>
 
     <licenses>
@@ -33,43 +33,50 @@
     </licenses>
 
     <organization>
-        <name>Openjob</name>
-        <url>https://github.com/open-job</url>
+        <name>Distributed Job Scheduler</name>
+        <url>https://github.com/rahamanmursalim-create</url>
     </organization>
 
-    <url>https://openjob.io/</url>
+    <url>https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler</url>
 
     <developers>
         <developer>
-            <id>Openjob</id>
-            <name>Openjob</name>
-            <url>https://openjob.io/</url>
+            <id>DistributedJobScheduler</id>
+            <name>Distributed Job Scheduler</name>
+            <url>https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler</url>
             <email>swoft@qq.com</email>
         </developer>
     </developers>
 
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/open-job/openjob/issues</url>
+        <url>https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/issues</url>
     </issueManagement>
 
     <scm>
-        <url>git@github.com:open-job/openjob.git</url>
-        <connection>scm:git@github.com:open-job/openjob.git</connection>
-        <developerConnection>scm:git@github.com:open-job/openjob.git</developerConnection>
+        <url>https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler.git</url>
+        <connection>scm:https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler.git</connection>
+        <developerConnection>scm:https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler.git</developerConnection>
     </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <!-- Java 27 is the requested runtime/compiler baseline. Use the compiler release option so
+             compilation also checks the selected platform API surface. -->
+        <java.version>27</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <lombok.version>1.18.48</lombok.version>
+        <springdoc.version>3.0.1</springdoc.version>
+        <!-- The legacy Alibaba P3C rules are tied to PMD 6.x; keep its parser
+             baseline conservative until the P3C rules are migrated to PMD 7. -->
+        <pmd.targetJdk>15</pmd.targetJdk>
         <scala.binary.version>2.13</scala.binary.version>
         <akka.version>2.6.19</akka.version>
         <guava.version>31.1-jre</guava.version>
         <joda.version>2.11.1</joda.version>
-        <checkstyle.version>3.1.2</checkstyle.version>
+        <checkstyle.version>3.3.1</checkstyle.version>
         <pmd.version>3.14.0</pmd.version>
         <p3c.pmd.version>2.1.0</p3c.pmd.version>
         <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
@@ -87,8 +94,8 @@
             </dependency>
 
             <dependency>
-                <groupId>io.openjob</groupId>
-                <artifactId>openjob-common</artifactId>
+                <groupId>io.distributedjobscheduler</groupId>
+                <artifactId>distributed-job-scheduler-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -97,6 +104,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
 
         <dependency>
@@ -127,6 +135,37 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.16.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <encoding>${maven.compiler.encoding}</encoding>
+                    <!-- JDK 23+ no longer discovers annotation processors implicitly. -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                            <version>4.1.2</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--
+                      JVM flags for the test fork:
+                      add-opens java.base/java.lang=ALL-UNNAMED : Orika reflective access
+                      EnableDynamicAgentLoading                  : suppresses Mockito/ByteBuddy WARNING
+                      jdk.unsafe.suppress=true                   : suppresses sun.misc.Unsafe WARNING from Lombok
+                    -->
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED -XX:+EnableDynamicAgentLoading -Djdk.unsafe.suppress=true</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -145,7 +184,7 @@
                 <configuration>
                     <configLocation>config/checkstyle/google-checks-8.29.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
-                    <encoding>UTF-8</encoding>
+                    <inputEncoding>UTF-8</inputEncoding>
                     <consoleOutput>true</consoleOutput>
                     <skip>false</skip>
                     <failsOnError>false</failsOnError>
@@ -171,20 +210,12 @@
                 <version>${pmd.version}</version>
                 <configuration>
                     <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-                    <targetJdk>${java.version}</targetJdk>
+                    <targetJdk>${pmd.targetJdk}</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
+                    <typeResolution>false</typeResolution>
                     <!-- rule sets -->
                     <rulesets>
-                        <ruleset>rulesets/java/ali-comment.xml</ruleset>
-                        <ruleset>rulesets/java/ali-concurrent.xml</ruleset>
-                        <ruleset>rulesets/java/ali-constant.xml</ruleset>
-                        <ruleset>rulesets/java/ali-exception.xml</ruleset>
-                        <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
-                        <ruleset>rulesets/java/ali-naming.xml</ruleset>
-                        <ruleset>rulesets/java/ali-oop.xml</ruleset>
-                        <ruleset>rulesets/java/ali-orm.xml</ruleset>
-                        <ruleset>rulesets/java/ali-other.xml</ruleset>
-                        <ruleset>rulesets/java/ali-set.xml</ruleset>
+                        <ruleset>${maven.multiModuleProjectDirectory}/config/pmd/ruleset.xml</ruleset>
                     </rulesets>
 
                     <excludes>
@@ -266,7 +297,7 @@
                         <version>${nexus-staging-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>oss-openjob</serverId>
+                            <serverId>oss-distributedjobscheduler</serverId>
                             <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
@@ -295,12 +326,24 @@
     <!-- Distribution management -->
     <distributionManagement>
         <repository>
-            <id>oss-openjob</id>
+            <id>oss-distributedjobscheduler</id>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>oss-openjob</id>
+            <id>oss-distributedjobscheduler</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jvnet-nexus-releases</id>
+            <url>https://maven.java.net/content/repositories/releases/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

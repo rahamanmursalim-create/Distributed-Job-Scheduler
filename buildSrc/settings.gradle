@@ -4,24 +4,24 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
-rootProject.name = 'openjob'
+rootProject.name = 'distributedjobscheduler'
 
-include(':openjob-server-openapi')
-include(':openjob-worker')
-include(':openjob-server-cluster')
-include(':openjob-server-admin')
-include(':openjob-server')
-include(':openjob-agent')
-include(':openjob-server-common')
-include(':openjob-common')
-include(':openjob-server-repository')
-include(':openjob-server-starter')
-include(':openjob-server-core')
+include(':distributedjobscheduler-server-openapi')
+include(':distributedjobscheduler-worker')
+include(':distributedjobscheduler-server-cluster')
+include(':distributedjobscheduler-server-admin')
+include(':distributedjobscheduler-server')
+include(':distributedjobscheduler-agent')
+include(':distributedjobscheduler-server-common')
+include(':distributedjobscheduler-common')
+include(':distributedjobscheduler-server-repository')
+include(':distributedjobscheduler-server-starter')
+include(':distributedjobscheduler-server-core')
 
-project(":openjob-server-openapi").projectDir = file('openjob-server/openjob-server-openapi')
-project(":openjob-server-cluster").projectDir = file('openjob-server/openjob-server-cluster')
-project(":openjob-server-admin").projectDir = file('openjob-server/openjob-server-admin')
-project(":openjob-server-common").projectDir = file('openjob-server/openjob-server-common')
-project(":openjob-server-repository").projectDir = file('openjob-server/openjob-server-repository')
-project(":openjob-server-starter").projectDir = file('openjob-server/openjob-server-starter')
-project(":openjob-server-core").projectDir = file('openjob-server/openjob-server-core')
+project(":distributedjobscheduler-server-openapi").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-openapi')
+project(":distributedjobscheduler-server-cluster").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-cluster')
+project(":distributedjobscheduler-server-admin").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-admin')
+project(":distributedjobscheduler-server-common").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-common')
+project(":distributedjobscheduler-server-repository").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-repository')
+project(":distributedjobscheduler-server-starter").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-starter')
+project(":distributedjobscheduler-server-core").projectDir = file('distributedjobscheduler-server/distributedjobscheduler-server-core')

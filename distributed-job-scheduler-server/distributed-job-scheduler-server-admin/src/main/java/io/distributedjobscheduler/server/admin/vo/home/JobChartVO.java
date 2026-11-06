@@ -1,0 +1,18 @@
+package io.distributedjobscheduler.server.admin.vo.home;
+
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * @author stelin swoft@qq.com
+ * @since 1.0.2
+ */
+@Data
+public class JobChartVO {
+    private List<String> axisData;
+    private List<Long> successData;
+    private List<Long> failData;
+    private List<Long> runningData;
+    private List<Long> percentList;
+}

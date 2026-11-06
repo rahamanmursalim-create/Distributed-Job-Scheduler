@@ -1,0 +1,184 @@
+package io.distributedjobscheduler.server.scheduler.scheduler;
+
+import akka.actor.ActorSelection;
+import io.distributedjobscheduler.common.constant.FailStatusEnum;
+import io.distributedjobscheduler.common.constant.InstanceStatusEnum;
+import io.distributedjobscheduler.common.request.ServerInstanceTaskChildListPullRequest;
+import io.distributedjobscheduler.common.request.ServerInstanceTaskListPullRequest;
+import io.distributedjobscheduler.common.request.ServerStopInstanceTaskRequest;
+import io.distributedjobscheduler.common.request.ServerStopJobInstanceRequest;
+import io.distributedjobscheduler.common.response.WorkerInstanceTaskChildListPullResponse;
+import io.distributedjobscheduler.common.response.WorkerInstanceTaskListPullResponse;
+import io.distributedjobscheduler.common.response.WorkerResponse;
+import io.distributedjobscheduler.common.util.FutureUtil;
+import io.distributedjobscheduler.server.common.util.BeanMapperUtil;
+import io.distributedjobscheduler.server.common.util.ServerUtil;
+import io.distributedjobscheduler.server.repository.constant.WorkerStatusEnum;
+import io.distributedjobscheduler.server.repository.dao.JobInstanceDAO;
+import io.distributedjobscheduler.server.repository.dao.WorkerDAO;
+import io.distributedjobscheduler.server.repository.entity.JobInstance;
+import io.distributedjobscheduler.server.repository.entity.Worker;
+import io.distributedjobscheduler.server.scheduler.dto.JobInstanceStopRequestDTO;
+import io.distributedjobscheduler.server.scheduler.dto.JobInstanceStopResponseDTO;
+import io.distributedjobscheduler.server.scheduler.dto.StopTaskRequestDTO;
+import io.distributedjobscheduler.server.scheduler.dto.StopTaskResponseDTO;
+import io.distributedjobscheduler.server.scheduler.dto.TaskChildPullRequestDTO;
+import io.distributedjobscheduler.server.scheduler.dto.TaskChildPullResponseDTO;
+import io.distributedjobscheduler.server.scheduler.dto.TaskListPullRequestDTO;
+import io.distributedjobscheduler.server.scheduler.dto.TaskListPullResponseDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * @author stelin swoft@qq.com
+ * @since 1.0.0
+ */
+@Slf4j
+@Component
+public class JobInstanceScheduler {
+    private final JobInstanceDAO jobInstanceDAO;
+    private final WorkerDAO workerDAO;
+
+    @Autowired
+    public JobInstanceScheduler(JobInstanceDAO jobInstanceDAO, WorkerDAO workerDAO) {
+        this.jobInstanceDAO = jobInstanceDAO;
+        this.workerDAO = workerDAO;
+    }
+
+    /**
+     * Pull task list
+     *
+     * @param request request
+     * @return List
+     */
+    public List<TaskListPullResponseDTO> pullTaskList(TaskListPullRequestDTO request) {
+        JobInstance jobInstance = this.jobInstanceDAO.getById(request.getJobInstanceId());
+
+        try {
+            ServerInstanceTaskListPullRequest pullRequest = new ServerInstanceTaskListPullRequest();
+            pullRequest.setJobInstanceId(request.getJobInstanceId());
+            pullRequest.setDispatchVersion(jobInstance.getDispatchVersion());
+            pullRequest.setCircleId(request.getCircleId());
+
+            ActorSelection masterActor = ServerUtil.getWorkerTaskMasterActor(jobInstance.getWorkerAddress());
+            WorkerInstanceTaskListPullResponse response = FutureUtil.mustAsk(masterActor, pullRequest, WorkerInstanceTaskListPullResponse.class, 3000L);
+            return Optional.ofNullable(response.getTaskList()).orElseGet(ArrayList::new)
+                    .stream().map(t -> BeanMapperUtil.map(t, TaskListPullResponseDTO.class)).collect(Collectors.toList());
+        } catch (Throwable ex) {
+            log.warn("Pull instance task list failed!", ex);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Pull child task
+     *
+     * @param request request
+     * @return List
+     */
+    public List<TaskChildPullResponseDTO> pullChildTask(TaskChildPullRequestDTO request) {
+        try {
+            ServerInstanceTaskChildListPullRequest pullRequest = new ServerInstanceTaskChildListPullRequest();
+            pullRequest.setTaskId(request.getTaskId());
+            pullRequest.setJobInstanceId(request.getJobInstanceId());
+            pullRequest.setDispatchVersion(request.getDispatchVersion());
+            pullRequest.setCircleId(request.getCircleId());
+
+            ActorSelection masterActor = ServerUtil.getWorkerTaskMasterActor(request.getWorkerAddress());
+            WorkerInstanceTaskChildListPullResponse response = FutureUtil.mustAsk(masterActor, pullRequest, WorkerInstanceTaskChildListPullResponse.class, 1000L);
+            return Optional.ofNullable(response.getTaskList()).orElseGet(ArrayList::new)
+                    .stream().map(t -> BeanMapperUtil.map(t, TaskChildPullResponseDTO.class)).collect(Collectors.toList());
+        } catch (Throwable ex) {
+            log.warn("Pull instance child task list failed!", ex);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Stop task
+     *
+     * @param requestDTO requestDTO
+     * @return StopTaskResponseDTO
+     */
+    public StopTaskResponseDTO stopTask(StopTaskRequestDTO requestDTO) {
+        JobInstance jobInstance = this.jobInstanceDAO.getById(requestDTO.getJobInstanceId());
+
+        try {
+            ServerStopInstanceTaskRequest request = new ServerStopInstanceTaskRequest();
+            request.setJobInstanceId(requestDTO.getJobInstanceId());
+            request.setTaskId(requestDTO.getTaskId());
+            request.setDispatchVersion(requestDTO.getDispatchVersion());
+            request.setCircleId(requestDTO.getCircleId());
+
+            ActorSelection masterActor = ServerUtil.getWorkerTaskMasterActor(jobInstance.getWorkerAddress());
+            FutureUtil.mustAsk(masterActor, request, WorkerInstanceTaskChildListPullResponse.class, 1000L);
+        } catch (Throwable ex) {
+            log.warn("Stop instance task failed!", ex);
+        }
+
+        return new StopTaskResponseDTO();
+    }
+
+    /**
+     * Stop
+     *
+     * @param stopRequest stopRequest
+     * @return JobInstanceStopResponseDTO
+     */
+    public JobInstanceStopResponseDTO stop(JobInstanceStopRequestDTO stopRequest) {
+        JobInstanceStopResponseDTO jobInstanceStopResponseDTO = new JobInstanceStopResponseDTO();
+        JobInstance jobInstance = this.jobInstanceDAO.getById(stopRequest.getJobInstanceId());
+        if (Objects.isNull(jobInstance)) {
+            throw new RuntimeException("Job instance is not exist! id=" + stopRequest.getJobInstanceId());
+        }
+
+        // Not running or empty address.
+        if (!InstanceStatusEnum.isRunning(jobInstance.getStatus()) || StringUtils.isEmpty(jobInstance.getWorkerAddress())) {
+            jobInstanceStopResponseDTO.setType(1);
+            return jobInstanceStopResponseDTO;
+        }
+
+        //  Worker offline
+        Worker byAddress = this.workerDAO.getByAddress(jobInstance.getWorkerAddress());
+        if (WorkerStatusEnum.OFFLINE.getStatus().equals(byAddress.getStatus())) {
+            jobInstanceStopResponseDTO.setType(0);
+
+            // Stop success to update status.
+            this.updateInstanceStatusByStop(stopRequest.getJobInstanceId());
+            return jobInstanceStopResponseDTO;
+        }
+
+        try {
+            ServerStopJobInstanceRequest serverStopJobInstanceRequest = new ServerStopJobInstanceRequest();
+            serverStopJobInstanceRequest.setJobId(jobInstance.getJobId());
+            serverStopJobInstanceRequest.setJobInstanceId(jobInstance.getId());
+            ActorSelection masterActor = ServerUtil.getWorkerTaskMasterActor(jobInstance.getWorkerAddress());
+            FutureUtil.mustAsk(masterActor, serverStopJobInstanceRequest, WorkerResponse.class, 1000L);
+        } catch (Throwable throwable) {
+            log.warn("Job instance stop failed!", throwable);
+        }
+
+        jobInstanceStopResponseDTO.setType(0);
+
+        // Stop success to update status.
+        this.updateInstanceStatusByStop(stopRequest.getJobInstanceId());
+        return jobInstanceStopResponseDTO;
+    }
+
+    /**
+     * Stop success to update status.
+     *
+     * @param instanceId instanceId
+     */
+    public void updateInstanceStatusByStop(Long instanceId) {
+        this.jobInstanceDAO.updateStatusById(instanceId, InstanceStatusEnum.STOP.getStatus(), FailStatusEnum.NONE.getStatus());
+    }
+}

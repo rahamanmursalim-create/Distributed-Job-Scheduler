@@ -1,0 +1,11 @@
+${AnsiColor.GREEN}
+   ___                             _           _
+  / _ \   _ __     ___   _ __     (_)   ___   | |__
+ | | | | | '_ \   / _ \ | '_ \    | |  / _ \  | '_ \
+ | |_| | | |_) | |  __/ | | | |   | | | (_) | | |_) |
+  \___/  | .__/   \___| |_| |_|  _/ |  \___/  |_.__/
+         |_|                    |__/
+ :: Version :: DistributedJobScheduler Server(v1.0.8) Spring Boot(v${spring-boot.version}) Akka(v2.6.19)
+ :: Website :: https://distributedjobscheduler.io
+ :: Author  :: https://github.com/stelin
+ :: Github  :: https://github.com/distributed-job-scheduler/distributedjobscheduler

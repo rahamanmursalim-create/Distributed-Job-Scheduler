@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="DistributedJobSchedulerRules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>DistributedJobScheduler PMD Ruleset with DFA and deprecated XPath exclusions to ensure clean PMD 6 execution</description>
+
+    <rule ref="rulesets/java/ali-comment.xml"/>
+    <rule ref="rulesets/java/ali-concurrent.xml">
+        <exclude name="AvoidManuallyCreateThreadRule"/>
+        <exclude name="ThreadShouldSetNameRule"/>
+        <exclude name="AvoidCallStaticSimpleDateFormatRule"/>
+        <exclude name="ThreadLocalShouldRemoveRule"/>
+        <exclude name="AvoidConcurrentCompetitionRandomRule"/>
+        <exclude name="CountDownShouldInFinallyRule"/>
+        <exclude name="LockShouldWithTryFinallyRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-constant.xml"/>
+    <rule ref="rulesets/java/ali-exception.xml">
+        <exclude name="TransactionMustHaveRollbackRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-flowcontrol.xml">
+        <exclude name="AvoidComplexConditionRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-naming.xml">
+        <exclude name="ArrayNamingShouldHaveBracketRule"/>
+        <exclude name="BooleanPropertyShouldNotStartWithIsRule"/>
+        <exclude name="ServiceOrDaoClassShouldEndWithImplRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-oop.xml">
+        <exclude name="StringConcatRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-orm.xml"/>
+    <rule ref="rulesets/java/ali-other.xml">
+        <exclude name="AvoidNewDateGetTimeRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-set.xml"/>
+
+    <!-- Re-defined with PMD 6 modern XPath to eliminate deprecation warnings -->
+    <rule name="ArrayNamingShouldHaveBracketRule"
+          language="java"
+          message="java.naming.ArrayNamingShouldHaveBracketRule.rule.msg"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>Brackets must be part of the type, not the variable name.</description>
+        <priority>3</priority>
+        <properties>
+            <property name="version" value="2.0"/>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //VariableDeclaratorId[@ExtraDimensions > 0]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule name="ServiceOrDaoClassShouldEndWithImplRule"
+          language="java"
+          message="java.naming.ServiceOrDaoClassShouldEndWithImplRule.rule.msg"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>Service and DAO implementation classes should end with Impl.</description>
+        <priority>3</priority>
+        <properties>
+            <property name="version" value="2.0"/>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //ClassOrInterfaceDeclaration[@Interface = false() and @Abstract = false() and ./ImplementsList/ClassOrInterfaceType[ends-with(@Image, 'Service') or ends-with(@Image, 'DAO')]][not(ends-with(@SimpleName, 'Impl'))]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule name="AvoidComplexConditionRule"
+          language="java"
+          message="java.flowcontrol.AvoidComplexConditionRule.rule.msg"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>Avoid ternary operations inside conditional statements.</description>
+        <priority>3</priority>
+        <properties>
+            <property name="version" value="2.0"/>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //IfStatement/Expression//ConditionalExpression
+                    | //WhileStatement/Expression//ConditionalExpression
+                    | //DoStatement/Expression//ConditionalExpression
+                    ]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule name="AvoidNewDateGetTimeRule"
+          language="java"
+          message="java.other.AvoidNewDateGetTimeRule.rule.msg"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>Use System.currentTimeMillis() instead of new Date().getTime().</description>
+        <priority>3</priority>
+        <properties>
+            <property name="version" value="2.0"/>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //PrimaryExpression[PrimaryPrefix/AllocationExpression/ClassOrInterfaceType[@Image='Date']][PrimarySuffix/Arguments[@Size=0]][PrimarySuffix[@Image='getTime']]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
+
+</ruleset>

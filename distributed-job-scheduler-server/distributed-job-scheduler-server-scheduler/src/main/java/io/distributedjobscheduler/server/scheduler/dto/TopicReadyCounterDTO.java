@@ -1,0 +1,13 @@
+package io.distributedjobscheduler.server.scheduler.dto;
+
+import lombok.Data;
+
+/**
+ * @author stelin swoft@qq.com
+ * @since 1.0.0
+ */
+@Data
+public class TopicReadyCounterDTO {
+    private String topic;
+    private Long ready;
+}

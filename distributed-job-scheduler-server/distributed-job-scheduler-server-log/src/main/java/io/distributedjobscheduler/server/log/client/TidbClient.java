@@ -1,0 +1,8 @@
+package io.distributedjobscheduler.server.log.client;
+
+/**
+ * @author stelin swoft@qq.com
+ * @since 1.0.0
+ */
+public class TidbClient {
+}
