@@ -1,0 +1,23 @@
+title: '## Change Log'
+style: gh-release
+names: [Feature, Fixed, Refactor, Update, Other]
+
+filters:
+  - name: msg_len
+    min_len: 10
+  - name: words_len
+    min_len: 2
+
+rules:
+  - name: Feature
+    start_withs: [feat, new, add]
+    contains: ['feat:', 'feature:']
+  - name: Fixed
+    start_withs: [fix, bug]
+    contains: ['fix:', 'bug:']
+  - name: Refactor
+    start_withs: [refactor, break, clean]
+    contains: ['refactor:']
+  - name: Update
+    start_withs: [update, up, chore, docs, perf, test]
+    contains: ['update:', 'chore:', 'perf:', 'docs:']

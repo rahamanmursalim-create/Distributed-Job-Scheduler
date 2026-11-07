@@ -1,0 +1,26 @@
+package io.distributedjobscheduler.server.admin.constant;
+
+/**
+ * @author Distributed Job Scheduler
+ */
+public class AdminConstant {
+    /**
+     * Login expire time, default is 30min
+     */
+    public static final Integer LOGIN_EXPIRE_TIME = 1800;
+
+    /**
+     * User login session key name in headers
+     */
+    public static final String HEADER_SESSION_KEY = "session";
+
+    /**
+     * Request uid key.
+     */
+    public static final String REQUEST_UID_KEY = "uid";
+
+    /**
+     * Max time expression
+     */
+    public static final Integer MAX_TIME_EXPRESSION = 7;
+}

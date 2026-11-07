@@ -1,0 +1,22 @@
+package io.distributedjobscheduler.common.response;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @author Distributed Job Scheduler
+ * @since 1.0.0
+ */
+@Data
+public class ServerHeartbeatResponse implements Serializable {
+
+    /**
+     * Worker address list.
+     */
+    private Set<String> workerAddressList;
+
+    private ServerHeartbeatSystemResponse systemResponse;
+}

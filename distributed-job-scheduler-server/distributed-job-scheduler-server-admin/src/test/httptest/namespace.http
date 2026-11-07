@@ -1,0 +1,49 @@
+### Add
+POST http://127.0.0.1:8080/admin/namespace/add
+accept: */*
+Content-Type: application/json
+Session: 2cebdf15d414b6713672475a21f995a0
+
+{
+  "name": "djs10000",
+  "status": 1
+}
+
+### update status
+POST http://127.0.0.1:8080/admin/namespace/update
+accept: */*
+Content-Type: application/json
+Session: 2cebdf15d414b6713672475a21f995a0
+
+{
+  "id": 2,
+  "name": "distributedjobscheduler",
+  "status": 2
+}
+
+### update
+POST http://127.0.0.1:8080/admin/namespace/update-status
+accept: */*
+Content-Type: application/json
+Session: 2cebdf15d414b6713672475a21f995a0
+
+{
+  "id": 2,
+  "status": 1
+}
+
+### update
+POST http://127.0.0.1:8080/admin/namespace/delete
+accept: */*
+Content-Type: application/json
+Session: 2cebdf15d414b6713672475a21f995a0
+
+{
+  "id": 20
+}
+
+### list
+GET http://127.0.0.1:8080/admin/namespace/list?page=1&size=10
+accept: */*
+Content-Type: application/json
+Session: 2cebdf15d414b6713672475a21f995a0

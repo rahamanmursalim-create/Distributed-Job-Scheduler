@@ -1,0 +1,17 @@
+/*
+ * Distributed Job Scheduler - buildSrc configuration
+ */
+
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}

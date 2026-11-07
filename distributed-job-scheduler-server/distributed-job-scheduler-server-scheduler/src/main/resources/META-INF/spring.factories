@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\\
+io.distributedjobscheduler.server.scheduler.autoconfigure.RedisAutoConfiguration,\\
+io.distributedjobscheduler.server.scheduler.autoconfigure.SchedulerAutoConfiguration

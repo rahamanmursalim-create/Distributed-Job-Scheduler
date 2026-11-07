@@ -1,0 +1,19 @@
+package io.distributedjobscheduler.common.util;
+
+import io.distributedjobscheduler.common.constant.DelayConstant;
+
+/**
+ * @author Distributed Job Scheduler
+ * @since 1.0.0
+ */
+public class DelayUtil {
+
+    /**
+     * Get fail delay topic
+     * @param topic topic
+     * @return String
+     */
+    public static String getFailDelayTopic(String topic) {
+        return String.format("%s.%s", topic, DelayConstant.FAIL_DELAY_SUFFIX);
+    }
+}

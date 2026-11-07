@@ -1,0 +1,74 @@
+package io.distributedjobscheduler.server.log.autoconfigure;
+
+import io.distributedjobscheduler.server.log.constant.LogStorageConstant;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * @author Distributed Job Scheduler
+ * @since 1.0.0
+ */
+@Data
+@ConfigurationProperties(prefix = "distributedjobscheduler.log")
+public class LogProperties {
+
+    private Storage storage = new Storage();
+
+    @Data
+    public static class Storage {
+        private String selector = LogStorageConstant.H2;
+        private Integer queryMaxSize;
+        private H2Properties h2 = new H2Properties();
+        private MysqlProperties mysql = new MysqlProperties();
+        private PostgresqlProperties postgresql = new PostgresqlProperties();
+        private OracleProperties oracle = new OracleProperties();
+        private TidbProperties tidb = new TidbProperties();
+        private Elasticsearch7Properties elasticsearch7 = new Elasticsearch7Properties();
+    }
+
+    @Data
+    public static class H2Properties {
+        private JdbcProperties properties = new JdbcProperties();
+    }
+
+    @Data
+    public static class MysqlProperties {
+        private JdbcProperties properties = new JdbcProperties();
+    }
+
+    @Data
+    public static class PostgresqlProperties {
+        private JdbcProperties properties = new JdbcProperties();
+    }
+
+    @Data
+    public static class OracleProperties {
+        private JdbcProperties properties = new JdbcProperties();
+    }
+
+    @Data
+    public static class TidbProperties {
+        private JdbcProperties properties = new JdbcProperties();
+    }
+
+    @Data
+    public static class Elasticsearch7Properties {
+        private String clusterNodes;
+        private String username;
+        private String password;
+        private String protocol = "http";
+        private String index = "distributedjobscheduler";
+        private Integer connectTimeout = 3000;
+        private Integer socketTimeout = 3000;
+        private Integer responseTimeout = 3000;
+        private Integer bufferLimit = 104857600;
+    }
+
+    @Data
+    public static class JdbcProperties {
+        private String driver;
+        private String url;
+        private String user;
+        private String password;
+    }
+}

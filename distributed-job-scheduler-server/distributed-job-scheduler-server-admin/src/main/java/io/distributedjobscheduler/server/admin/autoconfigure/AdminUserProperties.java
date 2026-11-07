@@ -1,0 +1,17 @@
+package io.distributedjobscheduler.server.admin.autoconfigure;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * @author Distributed Job Scheduler
+ * @since 1.0.0
+ */
+@Data
+@ConfigurationProperties(prefix = "distributedjobscheduler.admin.user")
+public class AdminUserProperties {
+    /**
+     * passwd salt
+     */
+    private String passwdSalt;
+}

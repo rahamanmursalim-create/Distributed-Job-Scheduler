@@ -1,0 +1,21 @@
+/*
+ * Distributed Job Scheduler - Gradle Settings
+ */
+
+rootProject.name = 'distributed-job-scheduler'
+
+include(':distributed-job-scheduler-common')
+include(':distributed-job-scheduler-server')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-common')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-cluster')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-scheduler')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-log')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-repository')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-alarm')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-admin')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-openapi')
+include(':distributed-job-scheduler-server:distributed-job-scheduler-server-starter')
+include(':distributed-job-scheduler-worker')
+include(':distributed-job-scheduler-worker:distributed-job-scheduler-worker-core')
+include(':distributed-job-scheduler-worker:distributed-job-scheduler-worker-samples')
+include(':distributed-job-scheduler-worker:distributed-job-scheduler-worker-spring-boot-starter')

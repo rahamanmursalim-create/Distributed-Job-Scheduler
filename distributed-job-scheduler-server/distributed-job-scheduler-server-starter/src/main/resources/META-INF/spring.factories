@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\\
+io.distributedjobscheduler.server.autoconfigure.ServerAutoConfiguration,\\
+io.distributedjobscheduler.server.autoconfigure.HttpClientAutoConfiguration
