@@ -1,12 +1,30 @@
-# Distributed Job Scheduler
+<div align="center">
 
-> A production-grade, distributed task scheduling framework built with Java 27 and Spring Boot.
+  <h1>Distributed Job Scheduler</h1>
 
-[![Build Status](https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/maven.yaml/badge.svg)](https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions)
-[![CodeQL](https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/codeql.yml/badge.svg)](https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/codeql.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Java](https://img.shields.io/badge/Java-27-orange.svg)](https://openjdk.org/projects/jdk/27/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
+  <p>
+    A production-grade, distributed task scheduling framework built with Java 27 and Spring Boot.
+  </p>
+
+  <p>
+    <a href="https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/maven.yaml">
+      <img src="https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/maven.yaml/badge.svg" alt="Build Status">
+    </a>
+    <a href="https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/codeql.yml">
+      <img src="https://github.com/rahamanmursalim-create/Distributed-Job-Scheduler/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
+    </a>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License">
+    </a>
+    <a href="https://openjdk.org/projects/jdk/27/">
+      <img src="https://img.shields.io/badge/Java-27-orange.svg" alt="Java 27">
+    </a>
+    <a href="https://spring.io/projects/spring-boot">
+      <img src="https://img.shields.io/badge/Spring%20Boot-4.1.2-brightgreen.svg" alt="Spring Boot">
+    </a>
+  </p>
+
+</div>
 
 ---
 
@@ -27,6 +45,19 @@
 ---
 
 ## Architecture
+
+<p align="center">
+  <img
+    src="docs/images/distributed-job-scheduler-architecture.png"
+    alt="Distributed Job Scheduler Architecture"
+    width="900"
+  />
+</p>
+
+<p align="center">
+  <em>High-level architecture and interaction between scheduling,
+  coordination, worker execution, and persistence components.</em>
+</p>
 
 ```
 ┌─────────────────────────────────────────────────────────┐
