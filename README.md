@@ -59,29 +59,6 @@
   coordination, worker execution, and persistence components.</em>
 </p>
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   Admin Dashboard (UI)                   │
-│              distributed-job-scheduler-ui                │
-└───────────────────────────┬─────────────────────────────┘
-                            │ REST / OpenAPI
-┌───────────────────────────▼─────────────────────────────┐
-│                   Server Cluster                         │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────────────┐  │
-│  │   Scheduler  │  │   Cluster    │  │   Log Server   │  │
-│  │  (Akka/Redis)│  │  (Akka/ZK)   │  │  (Elasticsearch│  │
-│  └─────────────┘  └──────────────┘  │   / H2 / MySQL)│  │
-│                                      └────────────────┘  │
-│               distributed-job-scheduler-server            │
-└───────────────────────────┬─────────────────────────────┘
-                            │ Akka Remote / HTTP
-┌───────────────────────────▼─────────────────────────────┐
-│                  Worker Nodes (n)                         │
-│         distributed-job-scheduler-worker                  │
-│    (Spring Boot Auto-Configuration + Task Execution)      │
-└─────────────────────────────────────────────────────────┘
-```
-
 ---
 
 ## Project Modules
