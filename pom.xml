@@ -67,7 +67,7 @@
         <java.version>27</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <lombok.version>1.18.48</lombok.version>
-        <springdoc.version>3.0.1</springdoc.version>
+        <springdoc.version>3.2.0</springdoc.version>
         <!-- The legacy Alibaba P3C rules are tied to PMD 6.x; keep its parser
              baseline conservative until the P3C rules are migrated to PMD 7. -->
         <pmd.targetJdk>15</pmd.targetJdk>
