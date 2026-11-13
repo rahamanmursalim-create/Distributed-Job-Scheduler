@@ -76,7 +76,7 @@
         <guava.version>31.1-jre</guava.version>
         <joda.version>2.11.1</joda.version>
         <checkstyle.version>3.3.1</checkstyle.version>
-        <pmd.version>3.14.0</pmd.version>
+        <pmd.version>3.28.0</pmd.version>
         <p3c.pmd.version>2.1.0</p3c.pmd.version>
         <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
